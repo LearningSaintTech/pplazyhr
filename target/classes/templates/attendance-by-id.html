@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+     <link rel="stylesheet" th:href="@{../css/style.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <title>Get Attendance Records</title>
+</head>
+<style>
+        
+
+        .status-p {
+            width: 4.497vw;
+            height: 2.35vw;
+            padding: 0.4vw 0.8vw;
+            background: #E6F5EE;
+            border-radius: 0.457vw;
+            border: 1px  #069855 solid;
+            align-items: center;
+            display: inline-flex;
+            color: #069855;
+            font-size: 0.915vw;
+            line-height: 1.372vw;
+            margin-top: 0.7vw;
+
+        }
+
+        .status-a {
+            width: 4.289vw;
+            height: 2.35vw;
+            padding: 0.229vw 0.686vw;
+            background: #FDF4F4;
+            border-radius: 0.457vw;
+            border: 1px  #D62525 solid;
+            justify-content: flex-start;
+            align-items: center;
+            display: inline-flex;
+            color: #D62525;
+            font-size: 0.915vw;
+            line-height: 1.372vw;
+            margin-top: 0.7vw;
+        }
+
+        .status-h {
+            width: 4.289vw;
+            height: 2.35vw;
+            padding: 0.229vw 0.686vw;
+            background: #FBF5E8;
+            border-radius: 0.457vw;
+            border: 1px  #D39C1D solid;
+            justify-content: flex-start;
+            align-items: center;
+            display: inline-flex;
+            color: #D39C1D;
+            font-size: 0.915vw;
+            line-height: 1.372vw;
+            margin-top: 0.7vw;
+
+        }
+    </style>
+<body>
+    <div class="header">
+        <h1 style="align-items: center;">User Dashboard</h1>
+        <div class="logout">
+            <div class="notification-bell">
+                <i class="fa fa-bell"></i>
+                <span id="notification-count" style="display: none;"></span>
+                <div id="notifications">
+                    <!-- Notifications will be dynamically added here -->
+                </div>
+            </div>
+            <div class="logout-button">
+                <a href="#" onclick="confirmLogout(event, '/logout')">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="sidebar">
+            <div >
+<!--                 <img src="https://scontent.fdel11-4.fna.fbcdn.net/v/t31.18172-8/26758225_1440458946063235_6014983166934445662_o.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=o3gMcHar-9QQ7kNvgFj6wHQ&_nc_ht=scontent.fdel11-4.fna&oh=00_AYDLGPcMM0frMjiyDa2iofl6XpIFwEQGDQUNTEvu9zOceA&oe=66920F61" alt="profile_picture">
+ -->               
+  <!-- <h3 th:text="${user.fullname}">User Fullname</h3> -->
+                <h3  style="display:none"; id="userId" th:text="${user.id}">User ID</h3>
+               <!--  <p th:text="${role}">User Role</p> -->
+            </div>
+            <div class="">
+                <ul class="list">
+                    <li><a href="/user-page" > <span class="icon"><i class="fas fa-home"></i></span> <span class="item">Home</span></a></li>
+                    <li><a th:href="@{/emp/{userId}(userId=${user.id})}"> <span class="icon"><i class="fas fa-desktop"></i></span> <span class="item">My
+                        Dashboard</span></a></li>                    <li><a href="#"> <span class="icon"><i class="fas fa-user-friends"></i></span> <span class="item">Employee</span></a></li>
+                    <li><a href="/user/clockings" class="active"> <span class="icon"><i class="fas fa-tachometer-alt"></i></span> <span class="item">Attendance</span></a></li>
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown"> <span class="icon"><i
+								class="fas fa-chart-line"></i></span> <span class="item">Ticket</span>
+							<b class="caret"></b>
+					</a>
+						<ul class="dropdown-menu">
+							<li><a href="/user/createTicket"><span class="icon"><i
+										class="fas fa-question-circle"></i></span> Query</a></li>
+							<li><a href="/createForm"><span class="icon"><i
+										class="fas fa-ticket-alt"></i></span> Reimbursement</a></li>
+						</ul></li>
+					<li class="dropdown"><a href="#"> <span class="icon"><i
+								class="fas fa-cog"></i></span> <span class="item">Settings</span>
+					</a>
+						<div class="dropdown-content">
+							<a class="dropdown-bg-color"
+								th:href="@{/updatePassword/{id}(id=${user.id})}">Change
+								Password</a>
+                                <span class="logout-button" sec:authorize="isAuthenticated()">
+                                    <a th:href="@{/logout}">Logout</a>
+                                </span>
+							<!-- Add more options here -->
+							<!-- Example: -->
+							<!-- <a class="dropdown-bg-color" href="#">Another Option</a> -->
+						</div></li>
+				</ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="welcome">
+            <h2>Welcome back, <span th:text="${user.fullname}">User Fullname</span></h2>
+            <div class="current-date-time">
+                <h5>Today, <span id="current-date">13 January, 2024</span> <span id="current-time">11:23 AM</span></h5>
+            </div>
+        </div>
+        <div class="find-employee">
+            <form>
+                <div class="form-group form-inline">
+                    <!-- <div>
+                        <input type="text" id="empId" name="empId" placeholder="Search by name, role, department...">
+                        <button type="submit">🔍</button>
+                    </div> -->
+                    <div>
+                        <input type="text" id="userIdInput" name="userId" placeholder="Enter UserID" required>
+                        <button type="button" class="fetch-button" onclick="fetchAttendance()">🔍</button>
+                    </div>
+                    <div class="right">
+                        <button type="button" onclick="">All Departments <i class="fa-solid fa-caret-down"></i></button>
+                        <button type="button" onclick="downloadAttendance()">Export <i
+                                class="fa-solid fa-file-export"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <h1 style="font-size: 1.2vw; font-weight: bold; font-style: italic; text-decoration: underline; margin-top: 1vw; text-align: center; margin-bottom: 1.5vw;">Get Attendance Records</h1>
+        <table class="table-responsive" id="attendanceTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Clock In Date</th>
+                    <th>Clock Out Date</th>
+                    <th>status</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Attendance records will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userId = document.getElementById('userId').textContent.trim();
+        console.log("userId: " + userId);
+        getAttendanceRecords(userId);
+    });
+
+        async function getAttendanceRecords(userId) {
+            try {
+                const response = await fetch(`/api/clockings/${userId}`);
+                if (!response.ok) {
+                    alert('Failed to fetch attendance records');
+                    return;
+                }
+
+                const attendanceRecords = await response.json();
+                displayAttendanceRecords(attendanceRecords);
+            } catch (error) {
+                console.error('Error fetching attendance records:', error);
+                alert('Error fetching attendance records');
+            }
+        }
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Present':
+                    return 'status-p';
+                case 'Absent':
+                    return 'status-a';
+                case 'Half-Day':
+                    return 'status-h';
+                default:
+                    return '';
+            }
+        }
+
+        function displayAttendanceRecords(records) {
+            const tableBody = document.querySelector('#attendanceTable tbody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            records.forEach(record => {
+            	const date = record.date ? new Date(record.date).toLocaleDateString(navigator.language) : 'N/A';
+            	const clockInDate = record.clockInDate ? new Date(record.clockInDate).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                const clockOutDate = record.clockOutDate ? new Date(record.clockOutDate).toLocaleString(navigator.language, { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+                const status = record.user ? record.status : 'N/A';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                	<td>${date}</td>
+                    <td>${clockInDate}</td>
+                    <td>${clockOutDate}</td>
+                    <td class="${getStatusClass(status)}">${status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+    <script th:src="@{/js/index.js}" type="text/javascript"></script>
+</body>
+</html>

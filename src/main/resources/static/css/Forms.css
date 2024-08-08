@@ -1,0 +1,267 @@
+body, html {
+    background: linear-gradient(to right, #f5c484, #fda018);
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.rectangle1, .rectangle2 {
+    width: 37.083vw;
+    height: 39.323vw;
+    margin: 8.438vw 0;
+    box-shadow: 0px 0.37vh 0.37vh 0px rgba(0, 0, 0, 0.25);
+}
+
+.rectangle1 {
+    background: linear-gradient(to bottom right, #FAFAFA 15%, #FCB348 50%) bottom right / 50% 50% no-repeat,
+                linear-gradient(to bottom left, #FAFAFA 15%, #FCB348 50%) bottom left / 50% 50% no-repeat,
+                linear-gradient(to top left, #FAFAFA 15%, #FCB348 50%) top left / 50% 50% no-repeat,
+                linear-gradient(to top right, #FAFAFA 15%, #FCB348 50%) top right / 50% 50% no-repeat;
+    position: relative;
+}
+
+.rectangle1 img.login-img {
+    margin-top: 9.115vw;
+    position: absolute;
+    height: 23.021vw;
+    width: 23.021vw;
+    left: 0;
+}
+
+.rectangle1 img.slay-img {
+    width: 37.865vw;
+    height: 30vw;
+    margin-left: 9.51vw;
+    margin-top: 12.115vw;
+    margin-bottom: 4.338vw;
+    position: absolute;
+    transform: rotate(-8deg);
+}
+
+.login_text {
+    color: #F5F3F3;
+    font-family: Outfit;
+    font-size: 2.083vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    width: 28.125vw;
+    position: absolute;
+    margin-top: 3.125vw;
+    margin-left: 2.083vw;
+}
+
+.rectangle2 {
+    background: #FAFAFA;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.login_form_div {
+    width: calc(100% - 7.604vw);
+    height: calc(100% - 7.604vw);
+    margin: 7.604vw;
+    border-radius: 1.042vw;
+    background: #F5F3F3;
+    box-shadow: 0px 0.37vh 0.37vh 0px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    padding: 2.5vw 3.75vw;
+}
+
+.form_content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vw;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+.login_text_heading {
+    text-align: center;
+    color: #70707B;
+    font-family: Outfit;
+    font-size: 1.25vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    top:0;
+}
+
+.label_text {
+    color: #70707B;
+    font-family: Outfit;
+    font-size: 1.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: capitalize;
+}
+
+.inputbox {
+    display: flex;
+    align-items: center;
+    border-radius: 0.417vw;
+    margin-top: 0.625vw;
+    margin-bottom: 1.25vw;
+    border: 0.156vw solid transparent; /* Initial transparent border */
+    color: var(--foreground-default, #344054);
+    font-family: Outfit;
+    font-size: 0.938vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    padding: 0.521vw 0.729vw;
+    box-sizing: border-box;
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.inputbox.focused {
+    border-color: #194185; /* Blue border on focus */
+}
+
+.form_data {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label_and_forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.625vw;
+}
+
+.forgot_pass {
+    color: #FFB800;
+    text-align: right;
+    font-family: Outfit;
+    font-size: 1.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: capitalize;
+    text-decoration:none;
+}
+
+.button {
+    height: 2.708vw;
+    padding: 0.833vw;
+    text-align: center;
+    border-radius: 0.417vw;
+    background: #FFB800;
+    color: #FCFCFD;
+    font-family: Outfit;
+    font-size: 1.042vw;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%;
+    transition: box-shadow 0.3s; /* Smooth transition for box shadow */
+    box-shadow: none; /* Initial no shadow */
+    border: none;
+    outline: none;
+}
+
+.button.clicked {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25); /* Shadow on click */
+}
+
+.NoAccount_text {
+    color: #70707B;
+    font-family: Outfit;
+    font-size: 1.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: capitalize;
+}
+
+.noaccount {
+    text-align: center;
+    margin-top: auto;
+    padding-top: 1vw;
+}
+
+.message {
+    padding: 0;
+    color: #70707B;
+    font-family: Outfit;
+    font-size: 1.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+}
+
+.logoimg {
+    position: absolute;
+    top: 0.604vw;
+    left: 2.906vw;
+    width: 8.135vw;
+    height: 4.635vw;
+}
+.link_text{ 
+	margin-left : 0.521vw;
+	color: #FFB800;
+	text-decoration:none;
+	
+}
+.error_text{
+	color: #70707B;
+    font-family: Outfit;
+    font-size: 0.8vw;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 80%; 
+    color:red;
+	
+}
+.user_name{
+	color: #70707B;
+    font-family: Outfit;
+    font-size: 2.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: capitalize;
+    color:blue;
+	
+}
+.user-info{
+	display:flex;
+	justify-content : space-between;
+	margin-top:-1.042vw;
+	margin-bottom:-1.042vw;
+	color:blue;
+	
+	
+	
+}
+
+.user_id{
+	color: #70707B;
+    font-family: Outfit;
+    font-size: 2.042vw;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: capitalize;
+    color:blue;
+	
+	
+}

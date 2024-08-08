@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-HrmApplication<hrms_application>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "admin_user.HrmApplication",
+            "projectName": "hrms_application",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

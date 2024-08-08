@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Learning Saint</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" th:href="@{/css/Forms.css}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="../static/img/login-logo.png"   th:src="@{/img/logo.svg}" class="logoimg" alt="navimg">
+        <div class="rectangle1">
+            <p class="login_text">Fill The Details To Login To Your Account</p>
+            <img src="../static/img/login-image.png" th:src="@{/img/login-image.png}" class="login-img" alt="profile_picture">
+            <img src="../static/img/saly-1.png"  th:src="@{/img/saly-1.png}" class="slay-img" alt="profile_picture">
+        </div>
+        <div class="rectangle2">
+            <div class="login_form_div">
+                <div class="form_content">
+                    <div class="login_text_heading">
+                        Login to your account
+                    </div>
+                    <form th:action="@{/login}" method="post" class="signin-form">
+                        <div class="form_data">
+                            <label class="label_text" for="username">Email</label>
+                            <input type="email" id="username" name="username" class="inputbox" placeholder="Enter your email" required>
+                        </div>
+                        <div class="form_data">
+                            <div class="label_and_forgot">
+                                <label class="label_text" for="password">Password</label>
+                                <a class="forgot_pass" th:href="@{/forgot-password}">Forgot ?</a>
+                            </div>
+                            <input type="password" id="password" name="password" class="inputbox" placeholder="Enter your password" required>
+                        </div>
+                        <div class="form_data">
+                            <button type="submit" class="button">Login Now</button>
+                        </div>
+                    </form>
+                    <div class="form_data">
+                         <div th:if="${param.error}" class="error_text">
+                        <p th:text="${error} " class="error_text"></p>
+                    </div>
+                    <div class="message" th:if="${param.logout}">
+                        Logout Successfully
+                    </div>
+                    <div class="noaccount">
+                        <p class="NoAccount_text">Don't have an account? <a th:href="@{/registration}" class = "link_text">Sign Up</a></p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sessionId = localStorage.getItem("sessionId");
+            const userRole = localStorage.getItem("userRole");
+            console.log("print localstorage sessionId" + sessionId);
+            console.log("print localstorage userRole" + userRole);
+            if (sessionId && userRole) {
+                if (userRole === "ROLE_ADMIN") {
+                    window.location.href = "/admin-page";
+                } else if (userRole === "ROLE_MANAGER") {
+                    window.location.href = "/manager-page";
+                } else if (userRole === "ROLE_USER") {
+                    window.location.href = "/user-page";
+                }
+            }
+
+            const inputs = document.querySelectorAll('.inputbox');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.classList.add('focused');
+                });
+                input.addEventListener('blur', function() {
+                    this.classList.remove('focused');
+                });
+            });
+
+            const button = document.querySelector('.button');
+            button.addEventListener('click', function() {
+                this.classList.add('clicked');
+            });
+        });
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

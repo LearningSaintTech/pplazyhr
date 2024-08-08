@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Learning Saint</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" th:href="@{/css/Forms.css}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="../static/img/login-logo.png"   th:src="@{/img/logo.svg}" class="logoimg" alt="navimg">
+        <div class="rectangle1">
+            <p class="login_text">Fill The Details To Create Your Account</p>
+            <img src="../static/img/login-image.png" th:src="@{/img/login-image.png}" class="login-img" alt="profile_picture">
+            <img src="../static/img/saly-1.png"  th:src="@{/img/saly-1.png}" class="slay-img" alt="profile_picture">
+        </div>
+        <div class="rectangle2">
+            <div class="login_form_div">
+                <div class="form_content">
+                    <div class="login_text_heading">
+                      Create an account
+                    </div>
+
+                    <form th:action="@{/registration}" method="post" th:object="${user}" class="signin-form">
+                          <div class="form_data">
+                            <label class="label_text" for="fullname">Full Name</label>
+                            <input th:field="*{fullname}" type="text" id="fullname" name="fullname"  class="inputbox" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="form_data">
+                            <label class="label_text" for="username">Email</label>
+                            <input th:field="*{email}" type="email" id="email" name="email" class="inputbox" placeholder="Enter your email" required>
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+                            <div th:if="${emailError != null}" class="error">[[${emailError}]]</div>
+                        </div>
+
+                        <div class="form_data">
+                            <div class="label_and_forgot">
+                                <label class="label_text" for="password">Password</label>
+                            </div>
+                            <input th:field="*{password}" type="password" id="password" name="password" class="inputbox" placeholder="Enter your password" required>
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+                            <div th:if="${passwordError != null}" class="error">[[${passwordError}]]</div>
+                        </div>
+                        <div class="form_data">
+                            <button type="submit" class="button">Register</button>
+                        </div>
+                    </form>
+                     <div class="message" th:if="${message != null}">
+                                [[${message}]]
+                    </div>
+                    <div class="form_data">
+
+                        <div class="noaccount">
+                            <p class="NoAccount_text">Already have an account? <a th:href="@{/login}" class = "link_text">Login here</a></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

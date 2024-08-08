@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard >>>></title>
+<link rel="stylesheet" th:href="@{../css/styles.css}">
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0e2433;
+    color: white;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.header {
+    background-color: #45b6fe;
+    padding: 20px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+h2 {
+    color: #45b6fe;
+}
+
+/* Add more styles and components for your dashboard here */
+.container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.form-container {
+    display: none;
+}
+
+.form-container.active {
+    display: block;
+}
+
+/* Add more styles and components for your form here */
+.form-message {
+    color: red;
+    margin-top: 20px;
+}
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>ADMIN Dashboard</h1>
+    </div>
+    <div class="container">
+        <h2>Welcome, [[${user.getFullname()}]]</h2>
+        <span sec:authorize="isAuthenticated">
+            <a th:href="@{/logout}">Logout</a>
+        </span>
+        
+        <div><a href="#" class="active" onclick="showForm()"> <span class="icon">Add Employee</span></a></div>
+    </div>
+
+    <div class="wrapper">
+        <div class="sidebar">
+            <!-- <div class="profile">
+                <img
+                    src=""
+                    alt="profile_picture">
+                <h3>Ashish</h3>
+                <p>Admin</p>
+            </div> -->
+            <div class="form-group">
+                <ul class="list">
+                    <li><a href="#" class="active"> <span class="icon"><i
+                                    class="fas fa-home"></i></span> <span class="item">Home</span>
+                        </a></li>
+                    <li><a href="#"> <span class="icon"><i
+                                    class="fas fa-desktop"></i></span> <span class="item">My
+                                Dashboard</span>
+                        </a></li>
+                    <li><a href="#"> <span class="icon"><i
+                                    class="fas fa-user-friends"></i></span> <span class="item" >Employee</span>
+                        </a></li>
+                    <li><a href="#"> <span class="icon"><i
+                                    class="fas fa-tachometer-alt"></i></span> <span class="item">Attendence</span>
+                        </a></li>
+                    <li><a href="#"> <span class="icon"><i
+                                    class="fas fa-chart-line"></i></span> <span class="item">Reports</span>
+                        </a></li>
+                    <li><a href="#"> <span class="icon"><i
+                                    class="fas fa-cog"></i></span> <span class="item">Settings</span>
+                        </a></li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Form for adding employee -->
+    <div class="container form-container" id="formContainer">
+        
+            <form action="/employee/add" method="post">
+                <label for="employeeId">Employee ID:</label><br>
+                <input type="text" id="employeeId" name="employeeId"><br>
+                
+                <label for="empId">Employee ID:</label><br>
+                <input type="text" id="empId" name="empId"><br>
+                
+                <label for="dob">Date of Birth:</label><br>
+                <input type="date" id="dob" name="dob"><br>
+                
+                <label for="gender">Gender:</label><br>
+                <select id="gender" name="gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select><br>
+                
+                <label for="bloodGroup">Blood Group:</label><br>
+                <input type="text" id="bloodGroup" name="bloodGroup"><br>
+                
+                <label for="phno">Phone Number:</label><br>
+                <input type="text" id="phno" name="phno"><br>
+                
+                <label for="address">Address:</label><br>
+                <textarea id="address" name="address"></textarea><br>
+                
+                <label for="department">Department:</label><br>
+                <input type="text" id="department" name="department"><br>
+                
+                <label for="mailId">Email:</label><br>
+                <input type="email" id="mailId" name="mailId"><br>
+                
+                <label for="firstName">First Name:</label><br>
+                <input type="text" id="firstName" name="firstName"><br>
+                
+                <label for="lastName">Last Name:</label><br>
+                <input type="text" id="lastName" name="lastName"><br>
+                
+                <label for="dateOfJoining">Date of Joining:</label><br>
+                <input type="date" id="dateOfJoining" name="dateOfJoining"><br>
+                
+                <label for="salary">Salary:</label><br>
+                <input type="text" id="salary" name="salary"><br>
+                
+                <label for="shift">Shift:</label><br>
+                <input type="text" id="shift" name="shift"><br>
+                
+                <input type="submit" value="Submit">
+            </form>
+   
+        <!-- Show a message if user doesn't have the required roles -->
+       
+    </div>
+
+    <script>
+        function showForm() {
+            var formContainer = document.getElementById("formContainer");
+            formContainer.classList.toggle("active");
+        }
+    </script>
+</body>
+</html>

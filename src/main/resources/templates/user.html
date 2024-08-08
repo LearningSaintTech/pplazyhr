@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{../css/style.css}">
+    <link rel="stylesheet" th:href="@{../css/calender.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        #update {
+            color: black;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 1rem;
+            font-weight: bold;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            margin-top: 7.813vw;
+        }
+
+        .cards {
+            display: flex;
+        }
+
+        .card {
+            margin: 10px;
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .card.disabledd {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <div class="header">
+        <h2>Welcome, <span th:text="${user.fullname}">User Fullname</span></h2>
+        <h3 th:text="${employee}">Employee</h3>
+
+        <span class="logout-button" sec:authorize="isAuthenticated()">
+            <a th:href="@{/logout}">Logout</a>
+        </span>
+
+    </div> -->
+
+    <div class="header">
+        <h1 style="align-items: center;">User Dashboard</h1>
+        <div class="logout">
+            <div class="notification-bell">
+                <i class="fa fa-bell"></i>
+                <span id="notification-count" style="display: none;"></span>
+                <div id="notifications">
+                    <p class="empty">No notifications yet</p>
+                    <!-- Notifications will be dynamically added here -->
+                </div>
+            </div>
+            <div class="logout-button">
+                <a href="#" onclick="confirmLogout(event, '/logout')">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="">
+        <div class="sidebar">
+            <div>
+                <!--                 <img src="https://scontent.fdel11-4.fna.fbcdn.net/v/t31.18172-8/26758225_1440458946063235_6014983166934445662_o.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_ohc=o3gMcHar-9QQ7kNvgFj6wHQ&_nc_ht=scontent.fdel11-4.fna&oh=00_AYDLGPcMM0frMjiyDa2iofl6XpIFwEQGDQUNTEvu9zOceA&oe=66920F61" alt="profile_picture">
+ -->
+                <!-- <h3 th:text="${user.fullname}">User Fullname</h3> -->
+                <h3 style="display:none" ; id="userId" th:text="${user.id}">User ID</h3>
+                <!--  <p th:text="${role}">User Role</p> -->
+            </div>
+            <div class="">
+                <ul class="list">
+                    <li><a href="/user-page" class="active"> <span class="icon"><i class="fas fa-home"></i></span> <span
+                                class="item">Home</span></a></li>
+                                <li><a th:href="@{/emp/{userId}(userId=${user.id})}"> <span class="icon"><i
+                                    class="fas fa-desktop"></i></span> <span class="item">My
+                                Dashboard</span></a></li>
+                    <li><a href="#"> <span class="icon"><i class="fas fa-user-friends"></i></span> <span
+                                class="item">Employee</span></a></li>
+                    <li><a href="/user/clockings"> <span class="icon"><i class="fas fa-tachometer-alt"></i></span> <span
+                                class="item">Attendance</span></a></li>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
+                                class="icon"><i class="fas fa-chart-line"></i></span> <span class="item">Ticket</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user/createTicket"><span class="icon"><i
+                                            class="fas fa-question-circle"></i></span> Query</a></li>
+                            <li><a href="/createForm"><span class="icon"><i class="fas fa-ticket-alt"></i></span>
+                                    Reimbursement</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown"><a href="#"> <span class="icon"><i class="fas fa-cog"></i></span> <span
+                                class="item">Settings</span>
+                        </a>
+                        <div class="dropdown-content">
+                            <a class="dropdown-bg-color" th:href="@{/updatePassword/{id}(id=${user.id})}">Change
+                                Password</a>
+
+                            <span class="logout-button" sec:authorize="isAuthenticated()">
+                                <a th:href="@{/logout}">Logout</a>
+                            </span>
+                            <!-- Add more options here -->
+                            <!-- Example: -->
+                            <!-- <a class="dropdown-bg-color" href="#">Another Option</a> -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="welcome">
+            <h2>Welcome back, <span th:text="${user.fullname}" style="color:rgb(0, 128, 255)">User Fullname</span></h2>
+            <div class="current-date-time">
+                <h5>
+                    Today, <span id="current-date"></span> <span id="current-time"></span></h5>
+            </div>
+        </div>
+
+        <div class="cards">
+            <button type="button" class="usercard disabledd" id="clockInButton" th:onclick="'clockIn(' + ${user.id} + ')'"
+                style="background-color:#3047BB;">
+                <div>
+                    <h3>Clock In</h3>
+                    <p id="clockInTime"></p>
+                </div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-fingerprint"></i>
+                </div>
+                <input type="hidden" id="userId" value="${user.id}">
+                <input type="hidden" id="clockingId">
+            </button>
+            <button type="button" class="usercard" onclick="clockOut()" id="clockOutButton"
+                style="background-color:#00882E;">
+                <div>
+                    <h3>Clock Out</h3>
+                    <p id="clockOutTime"></p>
+                </div>
+                <div class="icon-container">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </div>
+            </button>
+            <button class="usercard" style="background-color:#DC3546">
+                <h3>Total Absent</h3>
+                <p style="font-size: 1.5vw;">0</p>
+            </button>
+        </div>
+
+        <div class="row">
+            <div class="chart canva">
+                <div class="ratio">
+                    <h3>Clock IN Timer</h3>
+                </div>
+                <div id="update" ></div>
+            </div>
+
+            <div class="calendarBox">
+                <div class="ratio">
+                    <h3>Employee Calender</h3>
+                </div>
+                <div class="calendardiv">
+                    <div class="calendar">
+                        <h3 id="monthYear"></h3>
+                        <table id="calendarTable">
+                            <thead>
+                                <tr>
+                                    <th>S</th>
+                                    <th>M</th>
+                                    <th>T</th>
+                                    <th>W</th>
+                                    <th>T</th>
+                                    <th>F</th>
+                                    <th>S</th>
+                                </tr>
+                            </thead>
+                            <tbody id="calendarBody">
+                                <!-- Calendar days will be generated dynamically here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+
+
+        </script>
+        <script th:src="@{/js/index.js}" type="text/javascript"></script>
+        <script th:src="@{/js/main.js}" type="text/javascript"></script>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <link rel="stylesheet" th:href="@{../css/style.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+
+        .logout-button {
+    float: right;
+    /* or use flexbox or grid for better positioning */
+}
+    </style>
+</head>
+
+<body>
+	<div class="header">
+    <h1>ADMIN Dashboard</h1>
+    <div class="logout-button">
+        <span sec:authorize="isAuthenticated">
+            <a th:href="@{/logout}">
+                Logout
+            </a>
+        </span>
+    </div>
+    <h1>Find Employee by Employee ID</h1>
+        <form th:action="@{/employee/search}" method="get">
+            <div class="form-group">
+                <label for="empId">Employee ID (emp_id):</label>
+                <input type="text" id="empId" name="empId" style="width:50%" placeholder="Enter Employee ID">
+            </div>
+            <div class="form-group">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+</div>
+
+        <div class="sidebar">
+        <div class="profile">
+            <img src="../static/img/Universal.jpg" th:src="@{/img/Universal.png}" alt="profile_picture">
+            <!-- <h3 th:text="${user.fullname}">User Fullname</h3>
+                <h3 th:text="${user.id}">User ID</h3>
+                <p th:text="${role}">User Role</p> -->
+        </div>
+        <ul class="list">
+            <li><a href="#" class="active"><span class="icon"><i class="fas fa-home"></i></span> <span class="item">Home</span></a></li>
+            <li><a href="#"><span class="icon"><i class="fas fa-user"></i></span> <span class="item">My Profile</span></a></li>
+            <li><a href="/employee/all"><span class="icon"><i class="fas fa-users"></i></span> <span class="item">Employee</span></a></li>
+            <li><a href="/admin/clockings"><span class="icon"><i class="fas fa-calendar-check"></i></span> <span class="item">Attendance</span></a></li>
+            <li><a href="/admin/tickets"><span class="icon"><i class="fas fa-ticket-alt"></i></span> <span class="item">Tickets</span></a></li>
+            <li><a href="/all/users"> <span class="icon"><i
+									class="fas fa-users"></i></span> <span class="item">Roles</span>
+						</a></li>
+            <li><a href="#"><span class="icon"><i class="fas fa-cog"></i></span> <span class="item">Settings</span></a></li>
+        </ul>
+    </div>
+        <div class="main-content">
+            <div style="display:flex; justify-content: space-between;">
+                <h2>Employee List</h2>
+                <!-- <button type="button" class="add-emp-button" data-toggle="modal" data-target="#addEmployeeModal">+ Add Emp</button> -->
+            </div>
+            <table class="table-responsive">
+                <thead>
+				<tr>
+					<!-- <th>Employee ID</th> -->
+					<th>ID</th>
+					<th>Date</th>
+					<th>User ID</th>
+					<th>User Name</th>
+					<th>Clock In Date</th>
+					<th>Clock Out Date</th>
+					<th>Status</th>
+				</tr>
+			</thead>
+                <tbody id="clockingRecords">
+				<!-- Clocking records will be inserted here -->
+			</tbody>
+            </table>
+        </div>
+
+
+    
+
+<script>
+    async function fetchClockingRecords() {
+        try {
+            const response = await fetch('/api/clockings/all');
+            if (!response.ok) {
+                console.error('Failed to fetch clocking records:', response.status, response.statusText);
+                return;
+            }
+
+            const clockingRecords = await response.json();
+
+            // Verify that clockingRecords is an array
+            if (!Array.isArray(clockingRecords)) {
+                console.error('Expected an array of clocking records:', clockingRecords);
+                return;
+            }
+
+            const tableBody = document.getElementById('clockingRecords');
+            tableBody.innerHTML = ''; // Clear existing rows
+            clockingRecords.forEach(record => {
+                const userId = record.user ? record.user.id : 'N/A';
+                //const date = record.date ? record.date : 'N/A';
+                const date = record.date ? new Date(record.date).toLocaleDateString(navigator.language) : 'N/A';
+                const userName = record.user ? record.user.fullname : 'N/A';
+                const clockInDate = record.clockInDate ? new Date(record.clockInDate).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+                const clockOutDate = record.clockOutDate ? new Date(record.clockOutDate).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+                const status = record.user ? record.status : 'N/A';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.id}</td>
+                    <td>${date}</td>
+                    <td>${userId}</td>
+                    <td>${userName}</td>
+                    <td>${clockInDate}</td>
+                    <td>${clockOutDate}</td>
+                    <td>${status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error('Error fetching clocking records:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchClockingRecords);
+    
+    
+    async function fetchAttendance() {
+        const userId = document.getElementById('userIdInput').value.trim();
+        console.log("User ID: " + userId);
+
+        try {
+            const response = await fetch(`/api/clockings/${userId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch attendance records');
+            }
+
+            const attendanceRecords = await response.json();
+            displayAttendanceRecords(attendanceRecords);
+        } catch (error) {
+            console.error('Error fetching attendance records:', error);
+            alert('Error fetching attendance records');
+        }
+    }
+
+    function displayAttendanceRecords(records) {
+        const tableBody = document.querySelector('#attendanceTable tbody');
+        tableBody.innerHTML = ''; // Clear existing rows
+
+        records.forEach(record => {
+        	const userId = record.user ? record.user.id : 'N/A';
+        	const date = record.date ? new Date(record.date).toLocaleDateString(navigator.language) : 'N/A';
+        	const userName = record.user ? record.user.fullname : 'N/A';
+        	const clockInDate = record.clockInDate ? new Date(record.clockInDate).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+            const clockOutDate = record.clockOutDate ? new Date(record.clockOutDate).toLocaleString(navigator.language, {hour: '2-digit', minute:'2-digit'}) : 'N/A';
+            const status = record.user ? record.status : 'N/A';
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            	<td>${record.id}</td>
+            	<td>${date}</td>
+            	<td>${userName}</td>
+                <td>${clockInDate}</td>
+                <td>${clockOutDate}</td>
+                <td>${status}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function downloadAttendance() {
+        const table = document.getElementById('attendanceTable');
+        const rows = Array.from(table.querySelectorAll('tr'));
+
+        // Creating a workbook
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.table_to_sheet(table);
+
+        // Add worksheet to workbook
+        XLSX.utils.book_append_sheet(wb, ws, "Attendance");
+
+        // Save the workbook
+        XLSX.writeFile(wb, "attendance_records.xlsx");
+    }
+
+    </script>
+</body>
+
+</html>
